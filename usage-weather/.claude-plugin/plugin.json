@@ -1,0 +1,20 @@
+{
+  "name": "usage-weather",
+  "version": "0.2.0",
+  "description": "Context window forecast plus 5h/7d rate-limit usage with reset countdowns, drawn above the prompt.",
+  "author": {
+    "name": "Salik Salam"
+  },
+  "userConfig": {
+    "icons": {
+      "type": "string",
+      "title": "Icon set",
+      "description": "nerd needs a Nerd Font; plain uses basic unicode",
+      "default": "nerd",
+      "options": [
+        "nerd",
+        "plain"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "salik-mods",
+  "owner": { "name": "Salik Salam" },
+  "metadata": { "description": "Personal Claude Code mods." },
+  "plugins": [
+    {
+      "name": "usage-weather",
+      "source": "./usage-weather",
+      "description": "Context forecast plus 5h/7d usage gauges, pace and reset countdowns above the prompt."
+    }
+  ]
+}
