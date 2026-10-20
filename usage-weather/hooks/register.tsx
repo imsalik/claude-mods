@@ -9,6 +9,8 @@ type Pace = 'cool' | 'steady' | 'hot'
 
 const HISTORY = 12
 const BARS = '▁▂▃▄▅▆▇█'
+const EIGHTHS = '▏▎▍▌▋▊▉'
+const TRACK = 'subtle'
 const TOAST_AT = [80, 90]
 const HOUR = 3_600_000
 const WINDOW_MS: Record<string, number> = { five_hour: 5 * HOUR, seven_day: 168 * HOUR }
@@ -107,7 +109,9 @@ export const register: Register = (on, options) => {
               {(last || i > 0) && <Text dimColor>{'  │  '}</Text>}
               <Text color={color}>{`${icons.limit[l.kind] ?? icons.limitDefault} `}</Text>
               {g && <Text color={color}>{g.used}</Text>}
-              {g && <Text dimColor>{`${g.rest} `}</Text>}
+              {g?.part && <Text color={color} backgroundColor={TRACK}>{g.part}</Text>}
+              {g?.rest && <Text backgroundColor={TRACK}>{g.rest}</Text>}
+              {g && <Text>{' '}</Text>}
               <Text color={color} bold>{`${Math.round(l.percentUsed)}%`}</Text>
               {w.pace && <Text color={PACE_COLOR[w.pace]}>{` ${icons.pace[w.pace]}`}</Text>}
               {w.emptyInMs !== undefined ? (
@@ -165,11 +169,13 @@ function windowState(l: SessionRateLimit, now: number) {
   return { resetInMs, elapsed, pace, emptyInMs }
 }
 
-/** Block meter of `cells` whole cells; any usage fills at least one. */
+/** Block meter of `cells` cells at eighth-cell resolution; any usage fills at least one eighth. */
 function gauge(pct: number, cells: number) {
   const p = Math.min(100, Math.max(0, pct))
-  const full = p > 0 ? Math.max(1, Math.round((p / 100) * cells)) : 0
-  return { used: '█'.repeat(full), rest: '░'.repeat(cells - full) }
+  const eighths = p > 0 ? Math.max(1, Math.round((p / 100) * cells * 8)) : 0
+  const full = Math.floor(eighths / 8)
+  const part = eighths % 8 ? EIGHTHS[(eighths % 8) - 1] : ''
+  return { used: '█'.repeat(full), part, rest: ' '.repeat(cells - full - (part ? 1 : 0)) }
 }
 
 function addReading(context: SessionContextUsage) {

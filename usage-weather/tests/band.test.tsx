@@ -33,7 +33,7 @@ for (const surface of ['terminal', 'desktop'] as const) {
     expect(text).toContain('Showers')
     expect(text).toContain('67% ctx')
     expect(text).toContain('134.4k/200k')
-    expect(text).toContain('\u{F0150} ██░░░ 42%')
+    expect(text).toContain('\u{F0150} ██▏   42%')
     expect(text).toContain('42% \u{F0F85} \u{F051F} 2h13m')
     expect(text).toContain('18% \u{F0CD7} \u{F051F} 3d4h')
   })
@@ -50,7 +50,7 @@ test('drops gauges, tokens and chart on a narrow band but keeps limits', async (
   const text = await bandText($, on, 42, 50)
 
   expect(text).not.toContain('200k')
-  expect(text).not.toContain('░')
+  expect(text).not.toContain('█')
   expect(text).toContain('\u{F0150} 42%')
   expect(text).not.toContain('5h')
 })
